@@ -37,5 +37,18 @@ RSpec.describe Webui::RequestController do
       expect(flash[:error]).to eq("Can't find request 200000")
       expect(response).to redirect_to(user_show_path(User.current))
     end
+
+    it 'shows a note if the user is a project maintainer and there is at least one package maintainer' do
+      login receiver
+
+      target_package.add_user(receiver, Role.find_by_title!("maintainer"))
+      target_package.save
+
+      get :show, number: bs_request.number
+
+      expect(assigns(:is_project_maintainer)).to eq(false)
+      expect(assigns(:is_package_maintainer)).to eq(true)
+      #puts "output: #{@is_project_maintainer}"
+    end
   end
 end

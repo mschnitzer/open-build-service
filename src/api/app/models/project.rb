@@ -1820,6 +1820,23 @@ class Project < ActiveRecord::Base
     name
   end
 
+  def maintainers
+    maintainers = []
+
+    self.users_and_roles.each do |user|
+      maintainers.push(User.find_by_login!(user[0])) if user[1] == "maintainer"
+    end
+
+    self.groups_and_roles.each do |group|
+      if group[1] == "maintainer"
+        grobj = Group.find_by_title!(group[0])
+        maintainers = (maintainers << grobj.users).flatten
+      end
+    end
+
+    maintainers.uniq
+  end
+
   private
 
   # Go through all enabled build flags and look for a repo name that matches a

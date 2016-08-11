@@ -89,7 +89,6 @@ class Webui::RequestController < Webui::WebuiController
       flash[:error] = "Can't find request #{params[:number]}"
       redirect_back_or_to user_show_path(User.current) and return
     end
-
     @req = @bsreq.webui_infos
     @id = @req['id']
     @number = @req['number']
@@ -99,6 +98,8 @@ class Webui::RequestController < Webui::WebuiController
     @superseded_by = @req['superseded_by']
     @superseding = @req['superseding']
     @is_target_maintainer = @req['is_target_maintainer']
+    @is_project_maintainer = false
+    @is_package_maintainer = false
 
     @my_open_reviews = @req['my_open_reviews']
     @other_open_reviews = @req['other_open_reviews']
@@ -110,6 +111,11 @@ class Webui::RequestController < Webui::WebuiController
     @history = History.find_by_request(@bsreq, {withreviews: 1})
     @actions = @req['actions']
 
+    # if the target package has any package maintainers, we'll show a hint to project
+    # maintainers that maybe also package maintainers want to review the request (issue#1970)
+    @tpkg_maintainers = self.determine_maintainers(@actions)
+    @tpkg_maintainers_count = @tpkg_maintainers.count
+
     @request_before = nil
     @request_after = nil
     index = session[:request_numbers].try(:index, @number)
@@ -120,6 +126,18 @@ class Webui::RequestController < Webui::WebuiController
     end
 
     @comments = @bsreq.comments
+  end
+
+  def package_maintainers_dialog
+    tprj = params[:tprj]
+    tpkg = params[:tpkg]
+
+    target_package = Package.find_by_project_and_name(tprj, tpkg)
+
+    if target_package
+      @maintainers = target_package.maintainers
+      render_dialog
+    end
   end
 
   def sourcediff
@@ -427,6 +445,25 @@ class Webui::RequestController < Webui::WebuiController
   end
 
   private
+
+  def determine_maintainers(actions)
+    actions.each do |action|
+      target_package = Package.find_by_project_and_name(action[:tprj], action[:tpkg])
+
+      if target_package
+        tpkg_maintainers = target_package.maintainers
+        tprj_maintainers = target_package.project.maintainers
+        @tpkg_maintainers_count += tpkg_maintainers.count
+
+        if !User.current.is_nobody?
+          @is_package_maintainer = tpkg_maintainers.include?(User.current)
+          @is_project_maintainer = tprj_maintainers.include?(User.current)
+        end
+      end
+    end
+
+    maintainers
+  end
 
   def change_state(newstate, params)
     req = BsRequest.find_by_number(params[:number])
