@@ -40,6 +40,20 @@ RSpec.describe Webui::WebuiHelper do
     end
   end
 
+  describe '#word_break' do
+    it 'adds a <wbr> tag after a specific amount of characters' do
+      [
+        # input, expected, word break after
+        ["XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", "XXXXXXXXXX<wbr>XXXXXXXXXX<wbr>XXXXXXXXXX<wbr>XXXXXXXXXX", 10],
+        ["XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", "XXXXXXXXX<wbr>XXXXXXXXX<wbr>XXXXXXXXX<wbr>XXX", 9],
+        ["XXXXXXXXXXXXXXXX", "XXXX<wbr>XXXX<wbr>XXXX<wbr>XXXX", 4],
+        ["XX", "XX", 10],
+      ].each do |data|
+        expect(word_break(data[0], data[2])).to eq(data[1])
+      end
+    end
+  end
+
   describe '#repo_status_icon' do
     it 'renders icon' do
       blocked = repo_status_icon('blocked')

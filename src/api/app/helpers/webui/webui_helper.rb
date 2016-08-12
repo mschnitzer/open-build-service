@@ -388,4 +388,31 @@ module Webui::WebuiHelper
       "']".html_safe
     }.join(",\n").html_safe
   end
+
+  def word_break(string, len)
+    # adds a <wbr> tag after an amount of given characters
+
+    str_len = string.length
+    if str_len < 1
+      return ""
+    end
+
+    out = string
+    next_insert = 0
+
+    amount = (str_len.to_f / len.to_f).ceil
+    if amount >= 1
+      next_insert = len
+      amount.times do
+        if next_insert >= out.length
+          break
+        end
+
+        out.insert(next_insert, "<wbr>")
+        next_insert += len + 5 # increase +5 cause of the amount of the characters of "<wbr>"
+      end
+    end
+
+    out.html_safe
+  end
 end
