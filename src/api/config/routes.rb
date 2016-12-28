@@ -644,6 +644,7 @@ OBSApi::Application.routes.draw do
     end
 
     resources :image_templates, constraints: cons, only: [:index], controller: 'webui/image_templates'
+    resources :maintenance_incidents, constraints: cons, only: [:show], controller: 'maintenance_incidents'
   end
 
   controller :source do
