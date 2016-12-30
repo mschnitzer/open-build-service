@@ -32,6 +32,35 @@ class Review < ApplicationRecord
     self[:reviewer] || by_user || by_group || by_project || by_package
   end
 
+  def accepted_at
+    element = history_elements.last
+    if state == :accepted && element.type == 'HistoryElement::ReviewAccepted'
+
+      # Special case, return the acceptance time of the user when it got assigned from a group to a user
+      if /review assigend to user (?<user>.+)/ =~ element.comment
+        assigned_reviews = bs_request.reviews.where(by_user: user)
+        new_review = new_element = nil
+
+        assigned_reviews.each do |review|
+          if review.history_elements.any? { |he| he.comment =~ /review for group (?<group>.+)/ }
+            new_review = review
+            new_element = review.history_elements.last
+            break
+          end
+        end
+
+        if new_review.state == :accepted && new_element.type == 'HistoryElement::ReviewAccepted'
+          result = new_element.created_at
+        end
+      else
+        # Standard case, return created at of the ReviewAccepted HistoryElement
+        result = element.created_at
+      end
+    end
+
+    result
+  end
+
   def check_initial
     # Validates the existence of references.
     # NOTE: they can disappear later and the review should be still
