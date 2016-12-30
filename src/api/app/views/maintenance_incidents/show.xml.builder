@@ -1,11 +1,12 @@
 xml.maintenanceincident(project: @project.name) do
   xml.entry(type: :release_request_accepted, when: @request.accept_at)
 
-  @request.reviews.each do |review|
-    xml.entry(type: :review_opened, who: review.reviewer, id: review.id, when: review.created_at)
-    if review.state == :closed
-      xml.entry(type: :review_accepted, who: review.reviewer, id: review.id, when: review.updated_at)
+  @request.reviews.not_assigned.each do |review|
+    if review.state == :accepted
+      xml.entry(type: :review_accepted, who: review.reviewer, id: review.id, when: review.accepted_at)
     end
+
+    xml.entry(type: :review_opened, who: review.reviewer, id: review.id, when: review.created_at)
   end
 
   xml.entry(type: :release_request_created, when: @request.created_at)

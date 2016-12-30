@@ -46,7 +46,16 @@ class BsRequest < ApplicationRecord
 
   before_save :assign_number
   has_many :bs_request_actions, -> { includes([:bs_request_action_accept_info]) }, dependent: :destroy
-  has_many :reviews, dependent: :delete_all
+  has_many :reviews, dependent: :delete_all do
+    def assigned
+      joins(:history_elements).where(reviews: { history_elements: { type: 'HistoryElement::ReviewAssigned' } })
+    end
+
+    def not_assigned
+      self - self.assigned
+    end
+  end
+
   has_and_belongs_to_many :bs_request_action_groups, join_table: :group_request_requests
   has_many :comments, as: :commentable, dependent: :delete_all
   has_many :request_history_elements, -> { order(:created_at) }, class_name: 'HistoryElement::Request', foreign_key: :op_object_id
