@@ -602,17 +602,15 @@ class BsRequest < ApplicationRecord
         raise InvalidStateError.new "review is not in new state" unless user_review.state == :new
         raise Review::NotFoundError.new "Not an assigned review" unless HistoryElement::ReviewAssigned.where(op_object_id: user_review.id).last
         user_review.destroy
+      elsif user_review
+        user_review.state = :new
+        user_review.save!
+        HistoryElement::ReviewReopened.create(review: user_review, comment: review_comment, user: User.current)
       else
-        if user_review
-          user_review.state = :new
-          user_review.save!
-          HistoryElement::ReviewReopened.create(review: user_review, comment: review_comment, user: User.current)
-        else
-          user_review = reviews.create(by_user: reviewer.login, creator: User.current.login)
-          user_review.state = :new
-          user_review.save!
-          HistoryElement::ReviewAssigned.create(review: user_review, comment: review_comment, user: User.current)
-        end
+        user_review.assigned_to = reviews.create(by_user: reviewer.login, creator: User.current.login
+        user_review.assigned_to.state = :new
+        user_review.assigned_to.save!
+        HistoryElement::ReviewAssigned.create(review: user_review, comment: review_comment, user: User.current)
       end
       save!
     end

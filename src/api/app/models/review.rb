@@ -17,6 +17,16 @@ class Review < ApplicationRecord
   validates :reason, length: { maximum: 65534 }
 
   validate :check_initial, on: [:create]
+  validate :validate_recursive
+
+  belongs_to :assigned_from, class_name: 'Review', foreign_key: :review_id
+  has_one :assigned_to, class_name: 'Review', foreign_key: :review_id
+
+  def validate_recursive
+    if self.assigned_from && self.assigned_from == self.assigned_to
+      errors.add(:base, "recursive assignment")
+    end
+  end
 
   before_validation(on: :create) do
     if read_attribute(:state).nil?
