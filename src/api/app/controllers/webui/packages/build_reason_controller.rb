@@ -10,7 +10,7 @@ module Webui
         @details = @package.last_build_reason(@repository, @architecture.name)
 
         redirect_back(fallback_location: package_binaries_path(package: @package, project: @project, repository: @repository),
-                      error: "No build reason found for #{@repository.name}:#{@architecture.name}") unless @details.explain
+                      notice: "No build reason found for #{@repository.name}:#{@architecture.name}") unless @details.explain
       end
 
       private
