@@ -308,4 +308,97 @@ RSpec.describe Project, vcr: true do
       expect(Project.deleted?('never-existed-before')).to eq(true)
     end
   end
+
+  describe '#restore' do
+    let!(:admin_user) { create(:admin_user, login: 'Admin') }
+    let!(:project_name) { 'project_used_for_restoration' }
+    let(:project_meta) {
+      <<-PROJECT_META_XML
+        <project name=\"#{project_name}\">\n  <title></title>\n
+        <description></description>\n  <person userid=\"Admin\" role=\"maintainer\" />\n</project>
+      PROJECT_META_XML
+    }
+
+    before do
+      allow(Backend::Connection).to receive(:post).and_return(nil)
+      allow_any_instance_of(ProjectMetaFile).to receive(:to_s).and_return(project_meta)
+      allow(Collection).to receive(:find).and_return(ActiveXML::Node.new('<collection/>'))
+    end
+
+    describe 'verifys call to backend' do
+      it 'with option: user' do
+        expect(Backend::Connection).to receive(:post).with("/source/#{project_name}?cmd=undelete&user=#{admin_user}")
+        Project.restore(project_name, user: admin_user.login)
+      end
+
+      it 'with option: comment' do
+        expect(Backend::Connection).to receive(:post).with("/source/#{project_name}?cmd=undelete&comment=schaeuferle_mag_jeder")
+        Project.restore(project_name, comment: 'schaeuferle_mag_jeder')
+      end
+
+      it 'with options: user and comment' do
+        expect(Backend::Connection).to receive(:post).with("/source/#{project_name}?cmd=undelete&user=#{admin_user}&comment=schaeuferle_mag_jeder")
+        Project.restore(project_name, user: admin_user.login, comment: 'schaeuferle_mag_jeder')
+      end
+    end
+
+    describe 'project meta' do
+      it 'gets properly updated' do
+        expect_any_instance_of(Project).to receive(:update_from_xml!).with(
+          {"name" => "project_used_for_restoration", "title" => {}, "description" => {}, "person" => {"userid" => "Admin", "role" => "maintainer"}}
+        )
+
+        Project.restore(project_name)
+      end
+    end
+
+    describe 'restoration of project with packages' do
+      let(:packages_collection) {
+        <<-PACKAGES_COLLECTION
+        <collection>
+          <package name="test-package1" project="#{project_name}">
+            <title></title>
+            <description></description>
+          </package>
+          <package name="test-package2" project="#{project_name}">
+            <title></title>
+            <description></description>
+          </package>
+        </collection>
+        PACKAGES_COLLECTION
+      }
+
+      let(:package1_meta) {
+        "<package name=\"test-package1\" project=\"#{project_name}\">\n  <title/>\n  <description/>\n</package>\n"
+      }
+
+      let(:package2_meta) {
+        "<package name=\"test-package2\" project=\"#{project_name}\">\n  <title/>\n  <description/>\n</package>\n"
+      }
+
+      before do
+        allow(Collection).to receive(:find).and_return(ActiveXML::Node.new(packages_collection))
+        allow(PackageMetaFile).to receive(:new).with(project_name: project_name, package_name: 'test-package1').and_return(
+          "<package name=\"test-package1\" project=\"#{project_name}\"><title></title>  <description></description></package>"
+        )
+        allow(PackageMetaFile).to receive(:new).with(project_name: project_name, package_name: 'test-package2').and_return(
+          "<package name=\"test-package2\" project=\"#{project_name}\"><title></title>  <description></description></package>"
+        )
+      end
+
+      it 'creates package records in the database' do
+        project = Project.restore(project_name)
+
+        expect(project.packages.find_by(name: 'test-package1')).to be_a(Package)
+        expect(project.packages.find_by(name: 'test-package2')).to be_a(Package)
+      end
+
+      it 'verifys the meta of restored packages' do
+        Project.restore(project_name)
+
+        expect(Package.find_by(name: 'test-package1').render_xml).to eq(package1_meta)
+        expect(Package.find_by(name: 'test-package2').render_xml).to eq(package2_meta)
+      end
+    end
+  end
 end
