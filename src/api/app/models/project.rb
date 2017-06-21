@@ -130,7 +130,7 @@ class Project < ApplicationRecord
     response = ProjectFile.new(project_name: project_name, name: '_history').to_s(deleted: 1)
     return false unless response
 
-    Xmlhash.parse(response).size > 0
+    !Xmlhash.parse(response).empty?
   end
 
   def self.restore(project_name, backend_opts = {})
