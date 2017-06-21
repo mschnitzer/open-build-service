@@ -253,11 +253,37 @@ RSpec.describe Webui::ProjectController, vcr: true do
   describe 'GET #new' do
     before do
       login user
-      get :new, params: { name: 'ProjectName' }
     end
 
-    it { expect(assigns(:project)).to be_a(Project) }
-    it { expect(assigns(:project).name).to eq('ProjectName') }
+    context 'with a project name' do
+      before do
+        get :new, params: { name: 'ProjectName' }
+      end
+
+      it { expect(assigns(:project)).to be_a(Project) }
+      it { expect(assigns(:project).name).to eq('ProjectName') }
+    end
+
+    context 'for projects that never existed before' do
+      before do
+        get :new, params: { name: apache_project.name, restore_option: true }
+      end
+
+      it 'does not show a restoration hint' do
+        expect(assigns(:show_restore_message)).to eq(nil)
+      end
+    end
+
+    context 'for deleted projects' do
+      before do
+        allow(Project).to receive(:deleted?).and_return(true)
+        get :new, params: { name: apache_project.name, restore_option: true }
+      end
+
+      it 'shows a hint for restoring the deleted project' do
+        expect(assigns(:show_restore_message)).to eq(true)
+      end
+    end
   end
 
   describe 'GET #show' do
