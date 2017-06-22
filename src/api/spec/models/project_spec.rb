@@ -323,6 +323,8 @@ RSpec.describe Project, vcr: true do
       allow(Backend::Connection).to receive(:post).and_return(nil)
       allow_any_instance_of(ProjectMetaFile).to receive(:to_s).and_return(project_meta)
       allow(Collection).to receive(:find).and_return(ActiveXML::Node.new('<collection/>'))
+
+      login admin_user
     end
 
     describe 'verifys call to backend' do
@@ -345,7 +347,7 @@ RSpec.describe Project, vcr: true do
     describe 'project meta' do
       it 'gets properly updated' do
         expect_any_instance_of(Project).to receive(:update_from_xml!).with(
-          {"name"=>"project_used_for_restoration", "title"=>{}, "description"=>{}, "person"=>{"userid"=>"Admin", "role"=>"maintainer"}}
+          {"name" => "project_used_for_restoration", "title" => {}, "description" => {}, "person" => {"userid" => "Admin", "role" => "maintainer"}}
         )
 
         Project.restore(project_name)
@@ -369,10 +371,11 @@ RSpec.describe Project, vcr: true do
       }
 
       let(:package1_meta) {
-        <<-PACKAGE1_META
-        <package name="test-package1" project="#{project_name}">
-        <title></title>  <description></description></package>
-        PACKAGE1_META
+        "<package name=\"test-package1\" project=\"#{project_name}\">\n  <title/>\n  <description/>\n</package>\n"
+      }
+
+      let(:package2_meta) {
+        "<package name=\"test-package2\" project=\"#{project_name}\">\n  <title/>\n  <description/>\n</package>\n"
       }
 
       before do
@@ -393,11 +396,10 @@ RSpec.describe Project, vcr: true do
       end
 
       it 'verifys the meta of restored packages' do
-        #expect_any_instance_of(Package).to receive(:update_from_xml!).with(
-        #  {"name"=>"project_used_for_restoration", "title"=>{}, "description"=>{}, "person"=>{"userid"=>"Admin", "role"=>"maintainer"}}
-        #)
+        Project.restore(project_name)
 
-        #Project.restore(project_name)
+        expect(Package.find_by(name: 'test-package1').render_xml).to eq(package1_meta)
+        expect(Package.find_by(name: 'test-package2').render_xml).to eq(package2_meta)
       end
     end
   end
