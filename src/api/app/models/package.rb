@@ -300,6 +300,11 @@ class Package < ApplicationRecord
     ret
   end
 
+  def update_from_backend
+    update_from_xml(Xmlhash.parse(meta.to_s))
+    store
+  end
+
   def meta
     PackageMetaFile.new(project_name: project.name, package_name: name)
   end

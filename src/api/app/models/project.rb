@@ -143,8 +143,7 @@ class Project < ApplicationRecord
     project = Project.new(name: project_name)
 
     Project.transaction do
-      project.update_from_xml!(Xmlhash.parse(project.meta.to_s))
-      project.store
+      project.update_from_backend
 
       # restore all package meta data objects in DB
       backend_packages = Collection.find(:package, match: "@project='#{project_name}'")
@@ -153,8 +152,7 @@ class Project < ApplicationRecord
         package_meta = Xmlhash.parse(package.meta.to_s)
 
         Package.transaction do
-          package.update_from_xml(package_meta)
-          package.store
+          package.update_from_backend
         end
       end
     end
@@ -198,6 +196,11 @@ class Project < ApplicationRecord
                            description: image_template_package['description'])
     end
     project
+  end
+
+  def update_from_backend
+    update_from_xml!(Xmlhash.parse(meta.to_s))
+    store
   end
 
   def init

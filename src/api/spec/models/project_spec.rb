@@ -1,7 +1,7 @@
 require "rails_helper"
 require 'rantly/rspec_extensions'
 # WARNING: If you need to make a Backend call uncomment the following line
-# CONFIG['global_write_through'] = true
+CONFIG['global_write_through'] = true
 
 RSpec.describe Project, vcr: true do
   let!(:project) { create(:project, name: 'openSUSE_41') }
@@ -9,6 +9,7 @@ RSpec.describe Project, vcr: true do
   let(:package) { create(:package, project: project) }
   let(:leap_project) { create(:project, name: 'openSUSE_Leap') }
   let(:attribute_type) { AttribType.find_by_namespace_and_name!('OBS', 'ImageTemplates') }
+  let(:admin_user) { create(:admin_user, login: 'Admin') }
 
   describe "validations" do
     it {
@@ -315,7 +316,6 @@ RSpec.describe Project, vcr: true do
   end
 
   describe '.restore' do
-    let(:admin_user) { create(:admin_user, login: 'Admin') }
     let(:deleted_project) {
       create(
         :project_with_packages,
@@ -379,6 +379,24 @@ RSpec.describe Project, vcr: true do
         expect(project.packages.find_by(name: package1.name).render_xml).to eq(package1_meta_before_deletion)
         expect(project.packages.find_by(name: package2.name).render_xml).to eq(package2_meta_before_deletion)
       end
+    end
+  end
+
+  describe '#update_from_backend' do
+    before do
+      login admin_user
+    end
+
+    it 'updates a project by the content of its meta file' do
+      allow_any_instance_of(Project).to receive(:meta).and_return(
+        <<-XML_DATA
+        <project name=\"#{project.name}\">\n  <title>a cool test title</title>\n
+        <description>my really nice description</description>\n  <person userid=\"Admin\" role=\"maintainer\" />\n</project>\n
+        XML_DATA
+      )
+
+      project.update_from_backend
+      binding.pry
     end
   end
 end
