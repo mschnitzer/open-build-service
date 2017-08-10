@@ -2,9 +2,10 @@
   %strong
     Actions
 %ul.dropdown-menu-content(id="actions-trigger-#{user.login.gsub('.', '-')}-content" style="z-index:1;")
-  %li
-    = sprite_tag('accessories-text-editor')
-    = link_to('Edit user', controller: "user", action: "edit", user: user.login)
+  - if CONFIG[:ldap_mode] == :off
+    %li
+      = sprite_tag('accessories-text-editor')
+      = link_to('Edit user', controller: "user", action: "edit", user: user.login)
   %li
     = sprite_tag('accept')
     = link_to('Confirm user', {controller: "user", action: "confirm", user: user.login }, |

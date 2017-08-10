@@ -70,33 +70,43 @@ class Webui::UserController < Webui::WebuiController
   end
 
   def save
-    unless User.current.is_admin?
-      if User.current != @displayed_user
-        flash[:error] = "Can't edit #{@displayed_user.login}"
-        redirect_back(fallback_location: root_path) && return
+    if CONFIG['ldap_mode'] == :on
+      flash[:error] = "You're not authorized to change your or others account details."
+      redirect_back fallback_location: root_path
+    else
+      unless User.current.is_admin?
+        if User.current != @displayed_user
+          flash[:error] = "Can't edit #{@displayed_user.login}"
+          redirect_back(fallback_location: root_path) && return
+        end
       end
-    end
-    @displayed_user.realname = params[:realname]
-    @displayed_user.email = params[:email]
-    if User.current.is_admin?
-      @displayed_user.state = params[:state] if params[:state]
-      # FIXME: If we ever have more than one global this, and the view, has to be fixed
-      @displayed_user.update_globalroles([params[:globalrole]].compact)
-    end
+      @displayed_user.realname = params[:realname]
+      @displayed_user.email = params[:email]
+      if User.current.is_admin?
+        @displayed_user.state = params[:state] if params[:state]
+        # FIXME: If we ever have more than one global this, and the view, has to be fixed
+        @displayed_user.update_globalroles([params[:globalrole]].compact)
+      end
 
-    begin
-      @displayed_user.save!
-      flash[:success] = "User data for user '#{@displayed_user.login}' successfully updated."
-    rescue ActiveRecord::RecordInvalid => e
-      flash[:error] = "Couldn't update user: #{e.message}."
-    end
+      begin
+        @displayed_user.save!
+        flash[:success] = "User data for user '#{@displayed_user.login}' successfully updated."
+      rescue ActiveRecord::RecordInvalid => e
+        flash[:error] = "Couldn't update user: #{e.message}."
+      end
 
-    redirect_back(fallback_location: { action: 'show', user: @displayed_user })
+      redirect_back(fallback_location: { action: 'show', user: @displayed_user })
+    end
   end
 
   def edit
-    @roles = Role.global_roles
-    @states = %w(confirmed unconfirmed deleted locked)
+    if CONFIG['ldap_mode'] == :on
+      flash[:error] = "You're not authorized to change your or others account details."
+      redirect_back fallback_location: root_path
+    else
+      @roles = Role.global_roles
+      @states = %w(confirmed unconfirmed deleted locked)
+    end
   end
 
   def delete
@@ -184,28 +194,33 @@ class Webui::UserController < Webui::WebuiController
   end
 
   def change_password
-    # check the valid of the params
-    unless User.current.password_equals?(params[:password])
-      errmsg = 'The value of current password does not match your current password. Please enter the password and try again.'
-    end
-    if params[:new_password] != params[:repeat_password]
-      errmsg = 'The passwords do not match, please try again.'
-    end
-    if params[:password] == params[:new_password]
-      errmsg = 'The new password is the same as your current password. Please enter a new password.'
-    end
-    if errmsg
-      flash[:error] = errmsg
+    if CONFIG['ldap_mode'] == :on
+      flash[:error] = "You're not authorized to change your password."
+      redirect_back fallback_location: root_path
+    else
+      # check the valid of the params
+      unless User.current.password_equals?(params[:password])
+        errmsg = 'The value of current password does not match your current password. Please enter the password and try again.'
+      end
+      if params[:new_password] != params[:repeat_password]
+        errmsg = 'The passwords do not match, please try again.'
+      end
+      if params[:password] == params[:new_password]
+        errmsg = 'The new password is the same as your current password. Please enter a new password.'
+      end
+      if errmsg
+        flash[:error] = errmsg
+        redirect_to action: :show, user: User.current
+        return
+      end
+
+      user = User.current
+      user.update_password params[:new_password]
+      user.save!
+
+      flash[:success] = 'Your password has been changed successfully.'
       redirect_to action: :show, user: User.current
-      return
     end
-
-    user = User.current
-    user.update_password params[:new_password]
-    user.save!
-
-    flash[:success] = 'Your password has been changed successfully.'
-    redirect_to action: :show, user: User.current
   end
 
   def autocomplete
