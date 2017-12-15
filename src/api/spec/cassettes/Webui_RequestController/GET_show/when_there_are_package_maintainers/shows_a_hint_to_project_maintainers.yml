@@ -1,6 +1,326 @@
 ---
 http_interactions:
 - request:
+    method: put
+    uri: http://backend:5352/source/home:kugelblitz/_meta?user=kugelblitz
+    body:
+      encoding: UTF-8
+      string: |
+        <project name="home:kugelblitz">
+          <title/>
+          <description/>
+          <person userid="kugelblitz" role="maintainer"/>
+        </project>
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml
+      Cache-Control:
+      - no-cache
+      Connection:
+      - close
+      Content-Length:
+      - '143'
+    body:
+      encoding: UTF-8
+      string: |
+        <project name="home:kugelblitz">
+          <title></title>
+          <description></description>
+          <person userid="kugelblitz" role="maintainer" />
+        </project>
+    http_version: 
+  recorded_at: Thu, 14 Dec 2017 08:37:35 GMT
+- request:
+    method: put
+    uri: http://backend:5352/source/home:titan/_meta?user=titan
+    body:
+      encoding: UTF-8
+      string: |
+        <project name="home:titan">
+          <title/>
+          <description/>
+          <person userid="titan" role="maintainer"/>
+        </project>
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml
+      Cache-Control:
+      - no-cache
+      Connection:
+      - close
+      Content-Length:
+      - '133'
+    body:
+      encoding: UTF-8
+      string: |
+        <project name="home:titan">
+          <title></title>
+          <description></description>
+          <person userid="titan" role="maintainer" />
+        </project>
+    http_version: 
+  recorded_at: Thu, 14 Dec 2017 08:37:35 GMT
+- request:
+    method: put
+    uri: http://backend:5352/source/home:titan/goal/_meta?user=_nobody_
+    body:
+      encoding: UTF-8
+      string: |
+        <package name="goal" project="home:titan">
+          <title>O Jerusalem!</title>
+          <description>Consequatur et quas sunt est.</description>
+        </package>
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml
+      Cache-Control:
+      - no-cache
+      Connection:
+      - close
+      Content-Length:
+      - '143'
+    body:
+      encoding: UTF-8
+      string: |
+        <package name="goal" project="home:titan">
+          <title>O Jerusalem!</title>
+          <description>Consequatur et quas sunt est.</description>
+        </package>
+    http_version: 
+  recorded_at: Thu, 14 Dec 2017 08:37:35 GMT
+- request:
+    method: put
+    uri: http://backend:5352/source/home:titan/goal/_meta
+    body:
+      encoding: UTF-8
+      string: |
+        <package name="goal" project="home:titan">
+          <title>O Jerusalem!</title>
+          <description>Consequatur et quas sunt est.</description>
+        </package>
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml
+      Cache-Control:
+      - no-cache
+      Connection:
+      - close
+      Content-Length:
+      - '143'
+    body:
+      encoding: UTF-8
+      string: |
+        <package name="goal" project="home:titan">
+          <title>O Jerusalem!</title>
+          <description>Consequatur et quas sunt est.</description>
+        </package>
+    http_version: 
+  recorded_at: Thu, 14 Dec 2017 08:37:35 GMT
+- request:
+    method: put
+    uri: http://backend:5352/source/home:titan/goal/_config
+    body:
+      encoding: UTF-8
+      string: Impedit dolor rerum sit iste quas consectetur quod. Temporibus optio
+        facere. Nemo animi culpa qui ex. At voluptas sit occaecati modi nulla ipsum
+        nihil. Voluptate molestiae et ut accusamus enim.
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml
+      Cache-Control:
+      - no-cache
+      Connection:
+      - close
+      Content-Length:
+      - '207'
+    body:
+      encoding: UTF-8
+      string: |
+        <revision rev="3" vrev="3">
+          <srcmd5>066cd8ee560ec39ca7bbe2ad9756e601</srcmd5>
+          <version>unknown</version>
+          <time>1513240655</time>
+          <user>unknown</user>
+          <comment></comment>
+          <requestid/>
+        </revision>
+    http_version: 
+  recorded_at: Thu, 14 Dec 2017 08:37:35 GMT
+- request:
+    method: put
+    uri: http://backend:5352/source/home:titan/goal/somefile.txt
+    body:
+      encoding: UTF-8
+      string: Necessitatibus blanditiis a aut corrupti possimus qui. Non quaerat facere
+        magni. Fuga eum officiis accusamus enim suscipit et est. Ex ipsa magnam officiis
+        sint aperiam ipsum et. Cum impedit voluptatum quia eveniet error harum consequatur.
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml
+      Cache-Control:
+      - no-cache
+      Connection:
+      - close
+      Content-Length:
+      - '207'
+    body:
+      encoding: UTF-8
+      string: |
+        <revision rev="4" vrev="4">
+          <srcmd5>128d63f74796c72375fd4de4dc392569</srcmd5>
+          <version>unknown</version>
+          <time>1513240655</time>
+          <user>unknown</user>
+          <comment></comment>
+          <requestid/>
+        </revision>
+    http_version: 
+  recorded_at: Thu, 14 Dec 2017 08:37:35 GMT
+- request:
+    method: put
+    uri: http://backend:5352/source/home:kugelblitz/ball/_meta?user=_nobody_
+    body:
+      encoding: UTF-8
+      string: |
+        <package name="ball" project="home:kugelblitz">
+          <title>Fair Stood the Wind for France</title>
+          <description>Blanditiis velit ea optio vitae harum omnis sit.</description>
+        </package>
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml
+      Cache-Control:
+      - no-cache
+      Connection:
+      - close
+      Content-Length:
+      - '185'
+    body:
+      encoding: UTF-8
+      string: |
+        <package name="ball" project="home:kugelblitz">
+          <title>Fair Stood the Wind for France</title>
+          <description>Blanditiis velit ea optio vitae harum omnis sit.</description>
+        </package>
+    http_version: 
+  recorded_at: Thu, 14 Dec 2017 08:37:35 GMT
+- request:
+    method: put
+    uri: http://backend:5352/source/home:kugelblitz/ball/_meta
+    body:
+      encoding: UTF-8
+      string: |
+        <package name="ball" project="home:kugelblitz">
+          <title>Fair Stood the Wind for France</title>
+          <description>Blanditiis velit ea optio vitae harum omnis sit.</description>
+        </package>
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml
+      Cache-Control:
+      - no-cache
+      Connection:
+      - close
+      Content-Length:
+      - '185'
+    body:
+      encoding: UTF-8
+      string: |
+        <package name="ball" project="home:kugelblitz">
+          <title>Fair Stood the Wind for France</title>
+          <description>Blanditiis velit ea optio vitae harum omnis sit.</description>
+        </package>
+    http_version: 
+  recorded_at: Thu, 14 Dec 2017 08:37:35 GMT
+- request:
     method: get
     uri: http://backend:5352/source/home:kugelblitz/ball
     body:
@@ -15,8 +335,8 @@ http_interactions:
       - Ruby
   response:
     status:
-      code: 404
-      message: project 'home kugelblitz' does not exist
+      code: 200
+      message: OK
     headers:
       Content-Type:
       - text/xml
@@ -25,16 +345,14 @@ http_interactions:
       Connection:
       - close
       Content-Length:
-      - '158'
+      - '79'
     body:
       encoding: UTF-8
       string: |
-        <status code="404">
-          <summary>project 'home:kugelblitz' does not exist</summary>
-          <details>404 project 'home:kugelblitz' does not exist</details>
-        </status>
+        <directory name="ball" srcmd5="d41d8cd98f00b204e9800998ecf8427e">
+        </directory>
     http_version: 
-  recorded_at: Mon, 27 Nov 2017 09:36:51 GMT
+  recorded_at: Thu, 14 Dec 2017 08:37:36 GMT
 - request:
     method: post
     uri: http://backend:5352/source/home:kugelblitz/ball?cmd=diff&expand=1&filelimit=10000&opackage=goal&oproject=home:titan&view=xml&withissues=1
@@ -52,8 +370,8 @@ http_interactions:
       - Ruby
   response:
     status:
-      code: 404
-      message: project 'home kugelblitz' does not exist
+      code: 200
+      message: OK
     headers:
       Content-Type:
       - text/xml
@@ -62,16 +380,34 @@ http_interactions:
       Connection:
       - close
       Content-Length:
-      - '158'
+      - '1127'
     body:
       encoding: UTF-8
       string: |
-        <status code="404">
-          <summary>project 'home:kugelblitz' does not exist</summary>
-          <details>404 project 'home:kugelblitz' does not exist</details>
-        </status>
+        <sourcediff key="3e91d401fcf8cc0d27f46926d10dfc2d">
+          <old project="home:titan" package="goal" rev="4" srcmd5="128d63f74796c72375fd4de4dc392569" />
+          <new project="home:kugelblitz" package="ball" rev="0" srcmd5="d41d8cd98f00b204e9800998ecf8427e" />
+          <files>
+            <file state="deleted">
+              <old name="_config" md5="3689b3c08ade9a02ba87e82b68ec2dfc" size="193" />
+              <diff lines="3">@@ -1 +0,0 @@
+        -Impedit dolor rerum sit iste quas consectetur quod. Temporibus optio facere. Nemo animi culpa qui ex. At voluptas sit occaecati modi nulla ipsum nihil. Voluptate molestiae et ut accusamus enim.
+        \ No newline at end of file
+        </diff>
+            </file>
+            <file state="deleted">
+              <old name="somefile.txt" md5="46904e366988747eb7309d80d33e0b22" size="238" />
+              <diff lines="3">@@ -1 +0,0 @@
+        -Necessitatibus blanditiis a aut corrupti possimus qui. Non quaerat facere magni. Fuga eum officiis accusamus enim suscipit et est. Ex ipsa magnam officiis sint aperiam ipsum et. Cum impedit voluptatum quia eveniet error harum consequatur.
+        \ No newline at end of file
+        </diff>
+            </file>
+          </files>
+          <issues>
+          </issues>
+        </sourcediff>
     http_version: 
-  recorded_at: Mon, 27 Nov 2017 09:36:51 GMT
+  recorded_at: Thu, 14 Dec 2017 08:37:36 GMT
 - request:
     method: get
     uri: http://backend:5352/source/home:titan/goal
@@ -87,8 +423,8 @@ http_interactions:
       - Ruby
   response:
     status:
-      code: 404
-      message: project 'home titan' does not exist
+      code: 200
+      message: OK
     headers:
       Content-Type:
       - text/xml
@@ -97,14 +433,69 @@ http_interactions:
       Connection:
       - close
       Content-Length:
-      - '148'
+      - '293'
     body:
       encoding: UTF-8
       string: |
-        <status code="404">
-          <summary>project 'home:titan' does not exist</summary>
-          <details>404 project 'home:titan' does not exist</details>
-        </status>
+        <directory name="goal" rev="4" vrev="4" srcmd5="128d63f74796c72375fd4de4dc392569">
+          <entry name="_config" md5="3689b3c08ade9a02ba87e82b68ec2dfc" size="193" mtime="1513240655" />
+          <entry name="somefile.txt" md5="46904e366988747eb7309d80d33e0b22" size="238" mtime="1513240655" />
+        </directory>
     http_version: 
-  recorded_at: Mon, 27 Nov 2017 09:36:51 GMT
+  recorded_at: Thu, 14 Dec 2017 08:37:36 GMT
+- request:
+    method: post
+    uri: http://backend:5352/source/home:kugelblitz/ball?cmd=diff&expand=1&filelimit=10000&opackage=goal&oproject=home:titan&tarlimit=10000&view=xml&withissues=1
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Content-Type:
+      - application/octet-stream
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml
+      Cache-Control:
+      - no-cache
+      Connection:
+      - close
+      Content-Length:
+      - '992'
+    body:
+      encoding: UTF-8
+      string: |
+        <sourcediff key="af0c4c8f2bc603db62a7443c00a54b23">
+          <old project="home:titan" package="goal" rev="12" srcmd5="2a336c5f739fd41cc31dbc175638fb41" />
+          <new project="home:kugelblitz" package="ball" rev="0" srcmd5="d41d8cd98f00b204e9800998ecf8427e" />
+          <files>
+            <file state="deleted">
+              <old name="_config" md5="1bfcf72846cbabba118f6268510d2434" size="139" />
+              <diff lines="3">@@ -1 +0,0 @@
+        -Adipisci quia quia exercitationem aut repudiandae. Animi labore et temporibus numquam pariatur ipsam. Dolorem sequi qui tenetur tempora et.
+        \ No newline at end of file
+        </diff>
+            </file>
+            <file state="deleted">
+              <old name="somefile.txt" md5="7908c058f5c4fe9561fdacb70b508037" size="156" />
+              <diff lines="3">@@ -1 +0,0 @@
+        -Sit autem eos. Et quia iure. Et qui porro neque. Voluptatem magnam fuga praesentium ut perspiciatis officiis excepturi. Rerum facilis iusto ut magnam eaque.
+        \ No newline at end of file
+        </diff>
+            </file>
+          </files>
+          <issues>
+          </issues>
+        </sourcediff>
+    http_version: 
+  recorded_at: Fri, 15 Dec 2017 07:39:35 GMT
 recorded_with: VCR 3.0.3

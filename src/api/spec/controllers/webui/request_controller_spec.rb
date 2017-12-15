@@ -9,11 +9,11 @@ RSpec.describe Webui::RequestController, vcr: true do
   let(:receiver) { create(:confirmed_user, login: 'titan') }
   let(:reviewer) { create(:confirmed_user, login: 'klasnic') }
   let(:target_project) { receiver.home_project }
-  let(:target_package) { create(:package, name: 'goal', project_id: target_project.id) }
+  let(:target_package) { create(:package_with_file, name: 'goal', project_id: target_project.id) }
   let(:source_project) { submitter.home_project }
   let(:source_package) { create(:package, name: 'ball', project_id: source_project.id) }
   let(:devel_project) { create(:project, name: 'devel:project') }
-  let(:devel_package) { create(:package_with_file, name: 'goal', project: devel_project) }
+  let(:devel_package) { create(:package, name: 'goal', project: devel_project) }
   let(:bs_request) { create(:bs_request, description: "Please take this", creator: submitter.login) }
   let(:bs_request_submit_action) do
     create(:bs_request_action_submit, target_project: target_project.name,
@@ -34,7 +34,7 @@ RSpec.describe Webui::RequestController, vcr: true do
   it { is_expected.to use_before_action(:require_login) }
   it { is_expected.to use_before_action(:require_request) }
 
-  describe 'GET show' do
+  describe 'GET #show' do
     context 'as nobody' do
       before do
         get :show, params: { number: bs_request.number }
@@ -84,6 +84,63 @@ RSpec.describe Webui::RequestController, vcr: true do
 
       it 'does not show a hint to project maintainers by default' do
         expect(assigns(:show_project_maintainer_hint)).to be_falsey
+      end
+    end
+
+    context 'with truncated diffs' do
+      context 'for ASCII files' do
+        let(:target_package) { create(:package_with_file, name: 'test-package', file_content: "a\n" * 11000, project: target_project) }
+
+        before do
+          bs_request_submit_action
+          get :show, params: { number: bs_request.number }
+        end
+
+        it 'shows a hint' do
+          expect(assigns(:not_full_diff)).to be_truthy
+        end
+      end
+
+      context 'for archives' do
+        let(:target_package) { create(:package_with_binary_diff, name: 'test-package', project: target_project) }
+
+        before do
+          bs_request_submit_action
+          get :show, params: { number: bs_request.number }
+        end
+
+        it 'shows a hint' do
+          expect(assigns(:not_full_diff)).to be_truthy
+        end
+      end
+    end
+
+    context 'without truncated diffs' do
+      before do
+        bs_request_submit_action
+        get :show, params: { number: bs_request.number }
+      end
+
+      context 'for ASCII files' do
+        before do
+          bs_request_submit_action
+          get :show, params: { number: bs_request.number }
+        end
+
+        it 'does not show a hint' do
+          expect(assigns(:not_full_diff)).to be_falsy
+        end
+      end
+
+      context 'for archives' do
+        before do
+          bs_request_submit_action
+          get :show, params: { number: bs_request.number }
+        end
+
+        it 'does not show a hint' do
+          expect(assigns(:not_full_diff)).to be_falsy
+        end
       end
     end
   end

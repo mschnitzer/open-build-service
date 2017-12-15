@@ -79,7 +79,9 @@ class Webui::RequestController < Webui::WebuiController
   end
 
   def show
-    @req = @bs_request.webui_infos
+    diff_limit = params[:full_diff] ? 0 : nil
+
+    @req = @bs_request.webui_infos(filelimit: diff_limit, tarlimit: diff_limit)
     @id = @req['id']
     @number = @req['number']
     @state = @req['state'].to_s
@@ -96,6 +98,9 @@ class Webui::RequestController < Webui::WebuiController
 
     @history = @bs_request.history_elements
     @actions = @req['actions']
+
+    # print a hint that the diff is not fully shown (this only needs to be verified for submit actions)
+    @not_full_diff = truncated_diffs?(@req['actions'])
 
     # retrieve a list of all package maintainers that are assigned to at least one target package
     @package_maintainers = get_target_package_maintainers(@actions) || []
@@ -435,5 +440,18 @@ class Webui::RequestController < Webui::WebuiController
     target_link = ActionController::Base.helpers.link_to("#{tgt_prj} / #{tgt_pkg}", package_show_url(project: tgt_prj, package: tgt_pkg))
     request_link = ActionController::Base.helpers.link_to(req.number, request_show_path(req.number))
     flash[:notice] += " and forwarded to #{target_link} (request #{request_link})"
+  end
+
+  def truncated_diffs?(actions)
+    actions.select { |action| action[:type] == :submit && action[:sourcediff] }.each do |action|
+      action[:sourcediff].each do |sourcediff|
+        sourcediff['files'].each do |file|
+          # the 'shown' attribute is only set if the backend truncated the diff
+          return true if file[1]['diff']['shown']
+        end
+      end
+    end
+
+    false
   end
 end

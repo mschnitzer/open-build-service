@@ -908,7 +908,7 @@ class BsRequest < ApplicationRecord
 
     result['my_open_reviews'], result['other_open_reviews'] = reviews_for_user_and_others(User.current)
 
-    result['actions'] = webui_actions(opts[:diffs])
+    result['actions'] = webui_actions(opts)
     result
   end
 
@@ -1036,7 +1036,7 @@ class BsRequest < ApplicationRecord
     end
   end
 
-  def webui_actions(with_diff = true)
+  def webui_actions(opts = {})
     # TODO: Fix!
     actions = []
     bs_request_actions.each do |xml|
@@ -1059,7 +1059,7 @@ class BsRequest < ApplicationRecord
       case xml.action_type # All further stuff depends on action type...
       when :submit then
         action[:name] = "Submit #{action[:spkg]}"
-        action[:sourcediff] = xml.webui_infos if with_diff
+        action[:sourcediff] = xml.webui_infos(opts) if opts[:diffs]
         creator = User.find_by_login(self.creator)
         target_package = Package.find_by_project_and_name(action[:tprj], action[:tpkg])
         action[:creator_is_target_maintainer] = true if creator.has_local_role?(Role.hashed['maintainer'], target_package)
@@ -1098,7 +1098,7 @@ class BsRequest < ApplicationRecord
         end
 
         if action[:tpkg] # API / Backend don't support whole project diff currently
-          action[:sourcediff] = xml.webui_infos if with_diff
+          action[:sourcediff] = xml.webui_infos if opts[:diffs]
         end
       when :add_role then
         action[:name] = 'Add Role'
@@ -1110,10 +1110,10 @@ class BsRequest < ApplicationRecord
         action[:name] = 'Set Bugowner'
       when :maintenance_incident then
         action[:name] = "Incident #{action[:spkg]}"
-        action[:sourcediff] = xml.webui_infos if with_diff
+        action[:sourcediff] = xml.webui_infos if opts[:diffs]
       when :maintenance_release then
         action[:name] = "Release #{action[:spkg]}"
-        action[:sourcediff] = xml.webui_infos if with_diff
+        action[:sourcediff] = xml.webui_infos if opts[:diffs]
       end
       actions << action
     end

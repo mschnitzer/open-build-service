@@ -40,7 +40,7 @@ http_interactions:
           <person userid="tom" role="maintainer" />
         </project>
     http_version: 
-  recorded_at: Tue, 02 May 2017 14:55:55 GMT
+  recorded_at: Fri, 15 Dec 2017 12:40:52 GMT
 - request:
     method: put
     uri: http://backend:5352/source/home:tom/package_with_file/_meta?user=tom
@@ -48,8 +48,8 @@ http_interactions:
       encoding: UTF-8
       string: |
         <package name="package_with_file" project="home:tom">
-          <title>Arms and the Man</title>
-          <description>Incidunt sed quia voluptatem tenetur quis quisquam.</description>
+          <title>What's Become of Waring</title>
+          <description>Provident velit eum aut.</description>
         </package>
     headers:
       Accept-Encoding:
@@ -70,16 +70,16 @@ http_interactions:
       Connection:
       - close
       Content-Length:
-      - '180'
+      - '160'
     body:
       encoding: UTF-8
       string: |
         <package name="package_with_file" project="home:tom">
-          <title>Arms and the Man</title>
-          <description>Incidunt sed quia voluptatem tenetur quis quisquam.</description>
+          <title>What's Become of Waring</title>
+          <description>Provident velit eum aut.</description>
         </package>
     http_version: 
-  recorded_at: Tue, 02 May 2017 14:55:55 GMT
+  recorded_at: Fri, 15 Dec 2017 12:40:52 GMT
 - request:
     method: put
     uri: http://backend:5352/source/home:tom/package_with_file/_meta
@@ -87,8 +87,8 @@ http_interactions:
       encoding: UTF-8
       string: |
         <package name="package_with_file" project="home:tom">
-          <title>Arms and the Man</title>
-          <description>Incidunt sed quia voluptatem tenetur quis quisquam.</description>
+          <title>What's Become of Waring</title>
+          <description>Provident velit eum aut.</description>
         </package>
     headers:
       Accept-Encoding:
@@ -109,23 +109,25 @@ http_interactions:
       Connection:
       - close
       Content-Length:
-      - '180'
+      - '160'
     body:
       encoding: UTF-8
       string: |
         <package name="package_with_file" project="home:tom">
-          <title>Arms and the Man</title>
-          <description>Incidunt sed quia voluptatem tenetur quis quisquam.</description>
+          <title>What's Become of Waring</title>
+          <description>Provident velit eum aut.</description>
         </package>
     http_version: 
-  recorded_at: Tue, 02 May 2017 14:55:55 GMT
+  recorded_at: Fri, 15 Dec 2017 12:40:52 GMT
 - request:
     method: put
     uri: http://backend:5352/source/home:tom/package_with_file/_config
     body:
       encoding: UTF-8
-      string: Omnis est aut impedit. Accusamus et dolor soluta omnis. Dolor nesciunt
-        quis tempora commodi odit illo.
+      string: Dolores debitis velit commodi ut. Numquam optio asperiores saepe voluptas
+        vero quae architecto. Sed unde voluptatem dolorem sit sit voluptate numquam.
+        Qui necessitatibus tempore quo consequatur ut et. Dolore debitis nobis necessitatibus
+        consequatur repellat accusantium maxime.
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -149,24 +151,23 @@ http_interactions:
     body:
       encoding: UTF-8
       string: |
-        <revision rev="33" vrev="33">
-          <srcmd5>eca9ba6df3b9b16a46e224f17819d0e9</srcmd5>
+        <revision rev="11" vrev="11">
+          <srcmd5>12df2b747eefcf6da5ea08cc5d535918</srcmd5>
           <version>unknown</version>
-          <time>1493736955</time>
+          <time>1513341652</time>
           <user>unknown</user>
           <comment></comment>
           <requestid/>
         </revision>
     http_version: 
-  recorded_at: Tue, 02 May 2017 14:55:55 GMT
+  recorded_at: Fri, 15 Dec 2017 12:40:52 GMT
 - request:
     method: put
     uri: http://backend:5352/source/home:tom/package_with_file/somefile.txt
     body:
       encoding: UTF-8
-      string: Reiciendis molestiae possimus fugiat voluptatem amet nihil nam. In quas
-        vero ea delectus quae omnis rerum. Dolorum omnis culpa deleniti minima aut
-        placeat. Numquam deserunt nulla tempore cum.
+      string: Quis rerum asperiores. Ut ducimus ea at aut tempore quasi dicta. Quo
+        voluptatem saepe eos. Aut ipsum ratione. Et ut quis enim quaerat architecto.
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -190,16 +191,16 @@ http_interactions:
     body:
       encoding: UTF-8
       string: |
-        <revision rev="34" vrev="34">
-          <srcmd5>2e6da765ca3171f41469b3030bda5bf3</srcmd5>
+        <revision rev="12" vrev="12">
+          <srcmd5>12df2b747eefcf6da5ea08cc5d535918</srcmd5>
           <version>unknown</version>
-          <time>1493736955</time>
+          <time>1513341652</time>
           <user>unknown</user>
           <comment></comment>
           <requestid/>
         </revision>
     http_version: 
-  recorded_at: Tue, 02 May 2017 14:55:56 GMT
+  recorded_at: Fri, 15 Dec 2017 12:40:52 GMT
 - request:
     method: get
     uri: http://backend:5352/source/home:tom/package_with_file
@@ -207,10 +208,8 @@ http_interactions:
       encoding: US-ASCII
       string: ''
     headers:
-      Content-Type:
-      - text/plain
       Accept-Encoding:
-      - identity
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
       - "*/*"
       User-Agent:
@@ -231,15 +230,15 @@ http_interactions:
     body:
       encoding: UTF-8
       string: |
-        <directory name="package_with_file" rev="34" vrev="34" srcmd5="2e6da765ca3171f41469b3030bda5bf3">
-          <entry name="_config" md5="41d00f6b1780c2fd0bb01c7032b74728" size="102" mtime="1493736955" />
-          <entry name="somefile.txt" md5="6b05b96a68d574c212c40fa375603ef8" size="191" mtime="1493736955" />
+        <directory name="package_with_file" rev="12" vrev="12" srcmd5="12df2b747eefcf6da5ea08cc5d535918">
+          <entry name="_config" md5="2453182810e1725beb12a5a6c0e02971" size="277" mtime="1513341652" />
+          <entry name="somefile.txt" md5="cb1bc8c687101596e3e88d3cd19af933" size="145" mtime="1513341651" />
         </directory>
     http_version: 
-  recorded_at: Tue, 02 May 2017 14:55:56 GMT
+  recorded_at: Fri, 15 Dec 2017 12:40:52 GMT
 - request:
     method: post
-    uri: http://backend:5352/source/home:tom/package_with_file?cmd=diff&expand=1&filelimit=10000&opackage=package_with_file&oproject=home:tom
+    uri: http://backend:5352/source/home:tom/package_with_file?cmd=diff&expand=1&filelimit=10000&opackage=package_with_file&oproject=home:tom&tarlimit=10000
     body:
       encoding: UTF-8
       string: ''
@@ -269,5 +268,5 @@ http_interactions:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Tue, 02 May 2017 14:55:56 GMT
-recorded_with: VCR 3.0.3
+  recorded_at: Fri, 15 Dec 2017 12:40:52 GMT
+recorded_with: VCR 4.0.0
