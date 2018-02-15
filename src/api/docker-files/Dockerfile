@@ -17,6 +17,14 @@ ADD Gemfile /obs/src/api/Gemfile
 ADD Gemfile.lock /obs/src/api/Gemfile.lock
 RUN chown -R frontend /obs/src/api
 
+# foreman, which we only run in docker, needs a different thor version than OBS.
+# Installing the gem directly spares us from having to rpm package two different thor versions.
+RUN gem.ruby2.5 install thor:0.19 foreman
+# Ensure there is a foreman command without ruby suffix
+RUN ln -s /usr/bin/foreman.ruby2.5 /usr/local/bin/foreman
+
+RUN zypper install -y tar
+
 # Now do the rest as the user with the same ID as the user who
 # builds this container
 USER frontend
