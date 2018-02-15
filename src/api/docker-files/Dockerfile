@@ -19,6 +19,8 @@ RUN gem.ruby2.5 install thor:0.19 foreman
 # Ensure there is a foreman command without ruby suffix
 RUN ln -s /usr/bin/foreman.ruby2.5 /usr/local/bin/foreman
 
+RUN zypper install -y tar
+
 # Now do the rest as the user with the same ID as the user who
 # builds this container
 USER frontend
