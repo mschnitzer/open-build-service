@@ -1,0 +1,56 @@
+%h1
+  Microsoft Azure Configuration
+
+%p
+  You need to provide a subscription id and a management certificate in order to allow OBS to upload images to your Azure account.
+  We will store your credentials encrypted in our database.
+
+%h2 How to Generate and Upload a Management Certificate
+
+%p
+  To generate a management certificate, you need to open up your terminal and enter the following commands:
+  = text_area_tag 'instructions_1', "openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes", readonly: :yes
+
+  %strong
+    Please note:
+  Do not set a passphrase for the private key!
+
+%p
+  Once you've generated the private key (key.pem) and the certificate (cert.pem) file, you will need to export the PKCS2 information (keep the
+  export password empty!):
+  = text_area_tag 'instructions_2', "openssl pkcs12 -export -out management_certificate.cer -inkey key.pem -in cert.pem", readonly: :yes
+
+%p
+  Now go to the
+  = link_to 'Azure Portal', 'https://portal.azure.com', target: '_blank'
+  and then click
+  %strong
+    All services &raquo; Subscriptions &raquo; (select your subscription you want to operate on) &raquo; Management certificates &raquo; Upload
+  and select your newly created
+  %strong
+    management_certificate.cer
+  file.
+
+
+%h2 Configuration for OBS
+
+- if @configuration_available
+  %div{ class: 'grid_16 alpha omega box-invisible margin-bottom-15pt' }
+    %div{ class: 'ui-state-info ui-corner-all ui-widget-shadow padding-10pt' }
+      %span{ class: 'ui-icon ui-icon-info' }
+        The configured credentials are stored encrypted in our database and cannot be shown.
+        = link_to 'Click here to delete them', cloud_azure_configuration_path, method: :delete, data: { confirm: 'Do you really want to delete the current credentials?' }
+- else
+  .container
+    .row.grid_8
+      = form_for @azure_configuration, url: cloud_azure_configuration_path, method: :put, multipart: true do |f|
+        .row.grid_12
+          = label_tag('cloud_azure_configuration[subscription_id]', 'Subscription ID:')
+        .row.grid_12{ style: "margin-top: 8px;" }
+          = text_field_tag 'cloud_azure_configuration[subscription_id]', @azure_configuration.subscription_id
+        .row.grid_12{ style: "margin-top: 8px;" }
+          = label_tag('management_certificate', 'Your Microsoft Azure Management Certificate:')
+        .row.grid_12{ style: "margin-top: 8px;" }
+          = f.file_field 'management_certificate'
+        .row.grid_12{ style: "margin-top: 8px;" }
+          = submit_tag "Submit"

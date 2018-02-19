@@ -35,7 +35,8 @@ class Configuration < ApplicationRecord
     disable_publish_for_branches:         nil,
     admin_email:                          nil,
     unlisted_projects_filter:             nil,
-    unlisted_projects_filter_description: nil
+    unlisted_projects_filter_description: nil,
+    cloud_upload_pubkey_fingerprint:      nil
   }
   # rubocop:enable Style/MutableConstant
 
