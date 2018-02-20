@@ -8,5 +8,6 @@
 %ul
   %li
     = link_to 'Configure Amazon EC2 Credentials', cloud_ec2_configuration_path
-  %li
-    = link_to 'Configure Microsoft Azure Credentials', cloud_azure_configuration_path
+  - if @azure_feature_active
+    %li
+      = link_to 'Configure Microsoft Azure Credentials', cloud_azure_configuration_path
