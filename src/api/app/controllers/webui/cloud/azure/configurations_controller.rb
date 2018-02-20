@@ -3,10 +3,11 @@ module Webui
     module Azure
       class ConfigurationsController < WebuiController
         before_action :require_login
+        before_action :set_breadcrumb
         before_action -> { feature_active?(:cloud_upload) }
 
         def show
-          @crumb_list = ['Azure Configuration']
+          @crumb_list << 'Microsoft Azure'
           @azure_configuration = User.current.azure_configuration || User.current.create_azure_configuration
           @configuration_available = @azure_configuration.subscription_id && @azure_configuration.management_certificate
         end
@@ -32,6 +33,13 @@ module Webui
         end
 
         private
+
+        def set_breadcrumb
+          @crumb_list = [
+            WebuiController.helpers.link_to('Cloud Upload', cloud_upload_index_path),
+            WebuiController.helpers.link_to('Configuration', configuration_cloud_path)
+          ]
+        end
 
         def permitted_params
           permitted_params = params.require(:cloud_azure_configuration).permit(:subscription_id, :management_certificate)

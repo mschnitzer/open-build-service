@@ -1,6 +1,14 @@
 %h1
   Cloud Upload
 
+.float-right
+  %p
+    = link_to configuration_cloud_path do
+      = sprite_tag('cog')
+      Cloud upload configuration
+.clear-both
+%br/
+
 %div
   %table#upload-jobs
     %thead
@@ -24,7 +32,3 @@
             - unless ["succeeded", "failed"].include?(job.state)
               |
               = link_to 'Abort', cloud_upload_path(job.id),  method: :delete, data: { confirm: "Do you really want to abort job #{job.id}? Please note that we do NOT clean up AWS (e.g. removing the helper instance)!" }
-
-%div
-  %p
-    = link_to 'Update your EC2 Configuration', cloud_ec2_configuration_path
