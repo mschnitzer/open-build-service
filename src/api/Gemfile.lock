@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    abstract_method (1.2.1)
     actioncable (5.1.5)
       actionpack (= 5.1.5)
       nio4r (~> 2.0)
@@ -75,6 +76,8 @@ GEM
     capybara_minitest_spec (1.0.6)
       capybara (>= 2)
       minitest (>= 4)
+    cheetah (0.5.0)
+      abstract_method (~> 1.2)
     chunky_png (1.3.10)
     cliver (0.3.2)
     clockwork (2.0.3)
@@ -142,8 +145,6 @@ GEM
       thor (~> 0.20)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
-    gpgme (2.0.16)
-      mini_portile2 (~> 2.3)
     gssapi (1.2.0)
       ffi (>= 1.0.1)
     haml (5.0.4)
@@ -432,6 +433,7 @@ DEPENDENCIES
   bunny
   capybara
   capybara_minitest_spec
+  cheetah
   chunky_png
   clockwork (>= 0.7)
   cocoon
@@ -453,7 +455,6 @@ DEPENDENCIES
   flot-rails
   font-awesome-rails
   git-cop (>= 1.5.0)
-  gpgme
   gssapi
   haml
   haml_lint
